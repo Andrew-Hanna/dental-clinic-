@@ -1,9 +1,11 @@
 // import 'package:cross_platform/billing_details_page.dart';
+import 'package:cross_platform/billing/type_of_billing.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cross_platform/reserve_appointment.dart';
 import 'package:cross_platform/my_appointments.dart';
 import 'package:cross_platform/my_profile_page.dart'; // Add this import
+import 'package:cross_platform/billing/billing.dart'; // Add this import
 
 class PatientDrawer extends StatelessWidget {
   PatientDrawer({Key? key}) : super(key: key);
@@ -118,11 +120,11 @@ class PatientDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Navigator.pop(context); // Close the drawer
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => BillingDetailsPage()),
-                // );
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TypeOfBilling()),
+                );
               },
             ),
             const ListTile(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Footer extends StatelessWidget {
   @override
@@ -33,21 +34,31 @@ class Footer extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Text(
-                'Phone: 1234567890',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  launch('tel://01224458851');
+                },
+                child: Text(
+                  'Phone: 01224458851',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              Text(
-                'Email: dentalclinic@info.com',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  launch('mailto:dentalclinic@info.com');
+                },
+                child: Text(
+                  'Email: dentalclinic@info.com',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               SizedBox(

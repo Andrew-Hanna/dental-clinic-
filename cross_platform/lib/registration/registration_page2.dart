@@ -1,4 +1,5 @@
 import 'package:cross_platform/home_page/my_home_page.dart';
+import 'package:cross_platform/registration/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage2 extends StatefulWidget {
@@ -158,9 +159,20 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
+                    print('start the api function ');
+                    // await registerUser(
+                    //     widget.username,
+                    //     widget.email,
+                    //     widget.password,
+                    //     fullName,
+                    //     dob,
+                    //     gender,
+                    //     address,
+                    //     phoneNumber);
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),

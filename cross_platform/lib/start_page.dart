@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'login_page.dart';
-import 'registration_page.dart';
+import 'registration/registration_page.dart';
 
 class StartPage extends StatefulWidget {
   @override

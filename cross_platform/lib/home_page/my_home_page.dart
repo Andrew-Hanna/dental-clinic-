@@ -1,3 +1,4 @@
+import 'package:cross_platform/admin_portal/admin_drawer.dart';
 import 'package:cross_platform/doctor_portal/doctor_drawer.dart';
 import 'package:cross_platform/home_page/services.dart';
 import 'package:cross_platform/my_app_bar.dart';
@@ -20,7 +21,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DoctorDrawer(),
+      // drawer: DoctorDrawer(),
+      drawer: AdminDrawer(),
+      // drawer: PatientDrawer(),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: MyAppBar(),

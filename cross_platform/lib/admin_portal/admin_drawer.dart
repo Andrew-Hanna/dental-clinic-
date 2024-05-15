@@ -1,11 +1,14 @@
+import 'package:cross_platform/admin_portal/charts.dart';
+import 'package:cross_platform/admin_portal/list_of_patients.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:cross_platform/reserve_appointment.dart';
+import 'package:cross_platform/admin_portal/list_of_doctors.dart';
+
 import 'package:cross_platform/doctor_portal/doctor_appointments.dart';
 // Adjust the import path as necessary
 
-class DoctorDrawer extends StatelessWidget {
-  DoctorDrawer({Key? key}) : super(key: key);
+class AdminDrawer extends StatelessWidget {
+  AdminDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class DoctorDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'Doctor username',
+                'Admin',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -51,20 +54,7 @@ class DoctorDrawer extends StatelessWidget {
                 FontAwesomeIcons.person,
               ),
               title: const Text(
-                'My Profile ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(
-                FontAwesomeIcons.timeline,
-              ),
-              title: const Text(
-                'My Appointments',
+                'Patients',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
@@ -74,7 +64,45 @@ class DoctorDrawer extends StatelessWidget {
                 Navigator.pop(context); // Close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DoctorAppointments()),
+                  MaterialPageRoute(builder: (context) => ListOfPatients()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                FontAwesomeIcons.userDoctor,
+              ),
+              title: const Text(
+                'Doctors',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListOfDoctors()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                FontAwesomeIcons.timeline,
+              ),
+              title: const Text(
+                'Analytics',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChartWidget()),
                 );
               },
             ),
