@@ -1,11 +1,11 @@
-// import 'package:cross_platform/billing_details_page.dart';
-import 'package:cross_platform/billing/type_of_billing.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:cross_platform/reserve_appointment.dart';
-import 'package:cross_platform/my_appointments.dart';
-import 'package:cross_platform/my_profile_page.dart'; // Add this import
-import 'package:cross_platform/billing/billing.dart'; // Add this import
+import 'reserve_appointment.dart';
+import 'my_appointments.dart';
+import 'my_profile_page.dart';
+import 'billing/type_of_billing.dart';
+import 'user_provider.dart';
 
 class PatientDrawer extends StatelessWidget {
   PatientDrawer({Key? key}) : super(key: key);
@@ -15,6 +15,9 @@ class PatientDrawer extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double drawerWidth =
         screenWidth * 0.75; // Drawer covers 75% of the screen width
+    final userProvider = Provider.of<UserProvider>(context);
+
+    String firstName = userProvider.fullName.split(' ')[0];
 
     return SizedBox(
       width: drawerWidth,
@@ -22,14 +25,23 @@ class PatientDrawer extends StatelessWidget {
         backgroundColor: Colors.white,
         child: ListView(
           children: [
-            const ListTile(
+            ListTile(
               title: Text(
-                'WELCOME TO OUR CLINIC',
+                'WELCOME $firstName',
                 style: TextStyle(
                   color: Color.fromARGB(255, 82, 191, 245),
                   fontSize: 30,
                   fontFamily: 'Serif',
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Center(
+                child: Text(
+                  userProvider.email,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),

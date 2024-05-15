@@ -1,6 +1,11 @@
 import 'package:cross_platform/home_page/my_home_page.dart';
 import 'package:cross_platform/registration/sign_up.dart';
 import 'package:flutter/material.dart';
+import '/api_service.dart'; // Import the API service
+import 'package:provider/provider.dart';
+import '/user_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationPage2 extends StatefulWidget {
   final String username, email, password;
@@ -15,10 +20,8 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
   late String fullName, dob = '', gender = '', address, phoneNumber;
   DateTime selectedDate = DateTime.now();
 
-  // Dropdown items
   final List<String> genders = ['Male', 'Female'];
 
-  // Function to handle date picking
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -143,7 +146,7 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
                     return 'Please enter your phone number';
                   }
                   if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                    return 'Enter a valid phone number'; // Validates for numeric input
+                    return 'Enter a valid phone number';
                   }
                   return null;
                 },
@@ -162,22 +165,45 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    print('start the api function ');
-                    // await registerUser(
-                    //     widget.username,
-                    //     widget.email,
-                    //     widget.password,
-                    //     fullName,
-                    //     dob,
-                    //     gender,
-                    //     address,
-                    //     phoneNumber);
+                    try {
+                      var registerResponse = await ApiService().registerUser(
+                        widget.username,
+                        widget.email,
+                        widget.password,
+                        fullName,
+                        dob,
+                        gender,
+                        address,
+                        phoneNumber,
+                      );
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()),
-                    );
-                    // Navigate to another page or pop the stack
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(registerResponse['message'])),
+                      );
+
+                      var loginResponse = await ApiService()
+                          .loginUser(widget.username, widget.password);
+                      String userRole = loginResponse[
+                          'role']; // Get the role from the login response
+                      Provider.of<UserProvider>(context, listen: false)
+                          .setUserRole(
+                              userRole); // Set the user role in the provider
+                      Provider.of<UserProvider>(context, listen: false)
+                          .setUserInfo(
+                              widget.username,
+                              widget
+                                  .email); // Set the user info in the provider
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                      );
+                    } catch (e) {
+                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Registration or login failed')),
+                      );
+                    }
                   }
                 },
                 child: Text('Register'),

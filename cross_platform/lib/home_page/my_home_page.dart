@@ -1,29 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:cross_platform/admin_portal/admin_drawer.dart';
 import 'package:cross_platform/doctor_portal/doctor_drawer.dart';
+import 'package:cross_platform/patient_drawer.dart';
 import 'package:cross_platform/home_page/services.dart';
 import 'package:cross_platform/my_app_bar.dart';
-import 'package:cross_platform/patient_drawer.dart';
 import 'package:cross_platform/home_page/open_hours.dart';
-import 'package:flutter/material.dart';
-import 'package:cross_platform/my_app_bar.dart';
 import 'package:cross_platform/home_page/features.dart';
 import 'package:cross_platform/home_page/animated_images.dart';
 import 'package:cross_platform/home_page/footer.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/user_provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String userRole = Provider.of<UserProvider>(context)
+        .userRole; // Get the user role from the provider
+
+    Widget drawer;
+
+    // Determine which drawer to show based on the user role
+    if (userRole == 'admin') {
+      drawer = AdminDrawer();
+    } else if (userRole == 'doctor') {
+      drawer = DoctorDrawer();
+    } else if (userRole == 'patient') {
+      drawer = PatientDrawer();
+    } else {
+      drawer = Drawer(); // Default empty drawer
+    }
+
     return Scaffold(
-      // drawer: DoctorDrawer(),
-      drawer: AdminDrawer(),
-      // drawer: PatientDrawer(),
+      drawer: drawer, // Set the determined drawer
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: MyAppBar(),
