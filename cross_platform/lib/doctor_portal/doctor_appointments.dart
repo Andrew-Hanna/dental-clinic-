@@ -56,11 +56,14 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
                     size: 16,
                   ),
                   SizedBox(width: 5), // Space between icon and time text
-                  Text(
-                    item['scheduled_time'],
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
+                  Expanded(
+                    child: Text(
+                      item['scheduled_time'],
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle overflow
                     ),
                   ),
                 ],
@@ -95,7 +98,7 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
     },
     {
       'title': 'Appointment 3',
-      'subtitle': 'Dr. Johnson',
+      'subtitle': 'Dr. Smith',
       'scheduled_time': '2024-05-15T00:24:28.923Z',
     },
     {
@@ -111,21 +114,19 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Doctor Appointments'),
-          backgroundColor: Color.fromARGB(255, 82, 191, 245),
-        ),
-        body: Flexible(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: generateTiles(
-                    data), // replace 'yourData' with your actual data
-              ),
-            ),
+      appBar: AppBar(
+        title: Text('Doctor Appointments'),
+        backgroundColor: Color.fromARGB(255, 82, 191, 245),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: generateTiles(data),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

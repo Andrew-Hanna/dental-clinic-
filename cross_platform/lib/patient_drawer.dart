@@ -1,4 +1,3 @@
-import 'package:cross_platform/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,21 +13,20 @@ class PatientDrawer extends StatelessWidget {
 
   // Modify the constructor to accept the optional parameter
   PatientDrawer({Key? key, this.optionalParameter}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double drawerWidth =
         screenWidth * 0.75; // Drawer covers 75% of the screen width
     final userProvider = Provider.of<UserProvider>(context);
+
     String firstName;
+    // = userProvider.fullName.split(' ')[0];
     if (optionalParameter != null) {
       firstName = optionalParameter!;
     } else {
       firstName = userProvider.fullName.split(' ')[0];
     }
-
-    // String firstName = userProvider.fullName.split(' ')[0];
 
     return SizedBox(
       width: drawerWidth,
@@ -161,44 +159,50 @@ class PatientDrawer extends StatelessWidget {
               tileColor: Color.fromARGB(255, 236, 233, 233),
             ),
             _createServiceListTile(
-                context, 'Dental checkup', Icons.check_circle),
-            _createServiceListTile(context, 'Teeth cleaning', Icons.brush),
+                context,
+                'Dental checkup',
+                Icons.check_circle,
+                userProvider.token,
+                userProvider.userId,
+                userProvider.fullName),
+            _createServiceListTile(context, 'Teeth cleaning', Icons.brush,
+                userProvider.token, userProvider.userId, userProvider.fullName),
             _createServiceListTile(
-                context, 'Tooth extraction', Icons.remove_circle),
+                context,
+                'Tooth extraction',
+                Icons.remove_circle,
+                userProvider.token,
+                userProvider.userId,
+                userProvider.fullName),
             _createServiceListTile(
-                context, 'Root canal treatment', Icons.healing),
+                context,
+                'Root canal treatment',
+                Icons.healing,
+                userProvider.token,
+                userProvider.userId,
+                userProvider.fullName),
             _createServiceListTile(
-                context, 'Orthodontics', FontAwesomeIcons.faceSmile),
+                context,
+                'Orthodontics',
+                FontAwesomeIcons.faceSmile,
+                userProvider.token,
+                userProvider.userId,
+                userProvider.fullName),
             _createServiceListTile(
-                context, 'Teeth braces', FontAwesomeIcons.teeth),
-            ListTile(
-              leading: const Icon(
-                Icons.logout,
-              ),
-              tileColor: Color.fromARGB(255, 233, 228, 228),
-              title: const Text(
-                'LOGOUT',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 161, 12, 12),
-                  fontSize: 15,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => StartPage()),
-                );
-              },
-            ),
+                context,
+                'Teeth braces',
+                FontAwesomeIcons.teeth,
+                userProvider.token,
+                userProvider.userId,
+                userProvider.fullName),
           ],
         ),
       ),
     );
   }
 
-  ListTile _createServiceListTile(
-      BuildContext context, String serviceName, IconData icon) {
+  ListTile _createServiceListTile(BuildContext context, String serviceName,
+      IconData icon, String token, int patientId, String patientName) {
     return ListTile(
       leading: Icon(icon),
       title: Text(
@@ -213,8 +217,12 @@ class PatientDrawer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  ReserveAppointmentPage(serviceName: serviceName)),
+              builder: (context) => ReserveAppointmentPage(
+                    serviceName: serviceName,
+                    token: token,
+                    patientId: patientId,
+                    patientName: patientName,
+                  )),
         );
       },
     );
