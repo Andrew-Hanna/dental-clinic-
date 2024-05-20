@@ -1,7 +1,12 @@
+import 'package:cross_platform/doctor_portal/doctor_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cross_platform/reserve_appointment.dart';
 import 'package:cross_platform/doctor_portal/doctor_appointments.dart';
+import 'package:cross_platform/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:cross_platform/start_page.dart';
+
 // Adjust the import path as necessary
 
 class DoctorDrawer extends StatelessWidget {
@@ -12,6 +17,10 @@ class DoctorDrawer extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double drawerWidth =
         screenWidth * 0.75; // Drawer covers 75% of the screen width
+
+    final userProvider = Provider.of<UserProvider>(context);
+
+    String firstName = userProvider.fullName;
 
     return SizedBox(
       width: drawerWidth,
@@ -37,8 +46,8 @@ class DoctorDrawer extends StatelessWidget {
               endIndent: 20,
             ),
             ListTile(
-              title: const Text(
-                'Doctor username',
+              title: Text(
+                'Doctor $firstName',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -57,7 +66,13 @@ class DoctorDrawer extends StatelessWidget {
                   fontSize: 15,
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DoctorProfile()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(
@@ -75,6 +90,45 @@ class DoctorDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => DoctorAppointments()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.history,
+              ),
+              title: const Text(
+                'Medical History',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DoctorAppointments()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+              ),
+              tileColor: Color.fromARGB(255, 233, 228, 228),
+              title: const Text(
+                'LOGOUT',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 161, 12, 12),
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StartPage()),
                 );
               },
             ),

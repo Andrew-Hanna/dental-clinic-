@@ -13,6 +13,7 @@ class _PrescriptionState extends State<Prescription> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Doctor Appointments'),
+        backgroundColor: Color.fromARGB(255, 82, 191, 245),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

@@ -183,6 +183,7 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
 
                       var loginResponse = await ApiService()
                           .loginUser(widget.username, widget.password);
+                      print('login response');
                       String userRole = loginResponse[
                           'role']; // Get the role from the login response
                       Provider.of<UserProvider>(context, listen: false)

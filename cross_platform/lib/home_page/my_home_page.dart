@@ -19,6 +19,7 @@ class MyHomePage extends StatelessWidget {
         .userRole; // Get the user role from the provider
 
     Widget drawer;
+    print(userRole);
 
     // Determine which drawer to show based on the user role
     if (userRole == 'admin') {

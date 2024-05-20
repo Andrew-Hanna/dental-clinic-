@@ -10,36 +10,73 @@ class DoctorAppointments extends StatefulWidget {
 class _DoctorAppointmentsState extends State<DoctorAppointments> {
   List<Widget> generateTiles(List<dynamic> data) {
     return data.map((item) {
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Prescription()),
-          );
-        },
-        title: Text(item['title'],
+      return Card(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 5,
+        child: ListTile(
+          contentPadding: EdgeInsets.all(15),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Prescription()),
+            );
+          },
+          leading: Icon(
+            Icons.calendar_today,
+            color: Color.fromARGB(255, 82, 191, 245),
+          ),
+          title: Text(
+            item['title'],
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Color.fromARGB(255, 82, 191, 245),
-            )), // replace 'title' with the actual key in your data
-        subtitle: Row(
-          children: [
-            Text(item['subtitle'],
+            ),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 5), // Add space between title and subtitle
+              Text(
+                item['subtitle'],
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black,
-                )),
-            SizedBox(width: 30), // Add some space between the text widgets
-            Text(
-              item['scheduled_time'],
-              style: TextStyle(
-                fontSize: 15,
+                ),
               ),
+              SizedBox(height: 5), // Add space between subtitle text and time
+              Row(
+                children: [
+                  Icon(
+                    Icons.access_time,
+                    color: Colors.grey,
+                    size: 16,
+                  ),
+                  SizedBox(width: 5), // Space between icon and time text
+                  Text(
+                    item['scheduled_time'],
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Color.fromARGB(255, 82, 191, 245),
             ),
-          ],
-        ), // replace 'subtitle' with the actual key in your data
-        // add more properties as needed
+            onPressed: () {
+              print('delete');
+            },
+          ),
+        ),
       );
     }).toList();
   }
@@ -56,6 +93,16 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
       'subtitle': 'Dr. Johnson',
       'scheduled_time': '2024-05-15T00:24:28.923Z',
     },
+    {
+      'title': 'Appointment 3',
+      'subtitle': 'Dr. Johnson',
+      'scheduled_time': '2024-05-15T00:24:28.923Z',
+    },
+    {
+      'title': 'Appointment 4',
+      'subtitle': 'Dr. Johnson',
+      'scheduled_time': '2024-05-15T00:24:28.923Z',
+    },
     // Add more maps as needed
   ];
 
@@ -66,6 +113,7 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Doctor Appointments'),
+          backgroundColor: Color.fromARGB(255, 82, 191, 245),
         ),
         body: Flexible(
           child: SingleChildScrollView(

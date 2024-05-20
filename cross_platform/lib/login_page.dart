@@ -123,15 +123,29 @@ class _LoginPageState extends State<LoginPage> {
                         try {
                           var loginResponse =
                               await ApiService().loginUser(username, password);
+                          print('---------------------------------');
+                          print('login response');
                           String userRole = loginResponse['role'];
+                          print(userRole);
                           String accessToken = loginResponse['access_token'];
+                          print(accessToken);
                           Provider.of<UserProvider>(context, listen: false)
                               .setUserRole(userRole);
 
                           var userInfo =
                               await ApiService().getUserInfo(accessToken);
-                          String fullName = userInfo['full_name'];
-                          String email = userInfo['email'];
+                          print('user info');
+
+// Use null-aware operators to provide default values if any key is missing or has a null value
+                          String fullName =
+                              userInfo['full_name'] ?? 'Unknown Name';
+                          print('full name');
+                          print(fullName);
+
+                          String email = userInfo['email'] ?? 'Unknown Email';
+                          print('email');
+                          print(email);
+
                           Provider.of<UserProvider>(context, listen: false)
                               .setUserInfo(fullName, email);
 

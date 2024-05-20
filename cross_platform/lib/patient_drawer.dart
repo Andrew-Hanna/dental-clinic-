@@ -1,3 +1,4 @@
+import 'package:cross_platform/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -160,6 +161,26 @@ class PatientDrawer extends StatelessWidget {
                 context, 'Orthodontics', FontAwesomeIcons.faceSmile),
             _createServiceListTile(
                 context, 'Teeth braces', FontAwesomeIcons.teeth),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+              ),
+              tileColor: Color.fromARGB(255, 233, 228, 228),
+              title: const Text(
+                'LOGOUT',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 161, 12, 12),
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StartPage()),
+                );
+              },
+            ),
           ],
         ),
       ),
