@@ -130,6 +130,14 @@ class _LoginPageState extends State<LoginPage> {
                           Provider.of<UserProvider>(context, listen: false)
                               .setUserRole(userRole);
 
+                          var userInfo =
+                              await ApiService().getUserInfo(accessToken);
+                          String fullName = userInfo['full_name'];
+                          String email = userInfo['email'];
+                          Provider.of<UserProvider>(context, listen: false)
+                              .setUserInfo(
+                                  fullName, email, accessToken, userId);
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

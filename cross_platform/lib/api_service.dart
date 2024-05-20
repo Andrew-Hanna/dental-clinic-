@@ -130,8 +130,15 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> scheduleAppointment(String token, int patientId,
-      int doctorId, DateTime scheduledTime, String? notes) async {
+  Future<Map<String, dynamic>> scheduleAppointment(
+    String token,
+    int patientId,
+    String patientName,
+    int doctorId,
+    String doctorName,
+    DateTime scheduledTime,
+    String? notes,
+  ) async {
     final response = await http.post(
       Uri.parse('$baseUrl/appointments/'),
       headers: <String, String>{
@@ -139,7 +146,6 @@ class ApiService {
         'Authorization': 'Bearer $token',
       },
       body: jsonEncode(<String, dynamic>{
-        'patient_id': patientId,
         'doctor_id': doctorId,
         'scheduled_time': scheduledTime.toIso8601String(),
         'notes': notes,
@@ -147,7 +153,6 @@ class ApiService {
     );
 
     print("Request Payload: ${jsonEncode(<String, dynamic>{
-          'patient_id': patientId,
           'doctor_id': doctorId,
           'scheduled_time': scheduledTime.toIso8601String(),
           'notes': notes,
@@ -161,4 +166,24 @@ class ApiService {
       throw Exception('Failed to schedule appointment');
     }
   }
+
+  Future<Map<String, dynamic>> updateUserProfile(
+      String token, Map<String, dynamic> updateData) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/me/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(updateData),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to update user profile');
+    }
+  }
+
+  // Other API methods like fetchDoctors, etc.
 }

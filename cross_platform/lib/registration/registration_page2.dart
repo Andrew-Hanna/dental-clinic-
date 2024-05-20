@@ -190,8 +190,12 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
                       Provider.of<UserProvider>(context, listen: false)
                           .setUserRole(userRole);
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUserInfo(widget.username, widget.email,
-                              accessToken, userId);
+                          .setUserInfo(
+                        widget.username,
+                        widget.email,
+                        accessToken,
+                        userId,
+                      );
 
                       Navigator.push(
                         context,

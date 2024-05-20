@@ -7,12 +7,14 @@ class ReserveAppointmentPage extends StatefulWidget {
   final String serviceName;
   final String token; // Add token
   final int patientId; // Add patient ID
+  final String patientName; // Add patient name
 
   const ReserveAppointmentPage({
     Key? key,
     required this.serviceName,
     required this.token,
     required this.patientId,
+    required this.patientName,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class _ReserveAppointmentPageState extends State<ReserveAppointmentPage> {
   DateTime _focusedDay = DateTime.now();
   String? _selectedTime;
   int? _selectedDoctorId;
+  String? _selectedDoctorName;
   String? _notes;
   List<dynamic> _doctors = [];
   final ApiService apiService = ApiService();
@@ -49,6 +52,10 @@ class _ReserveAppointmentPageState extends State<ReserveAppointmentPage> {
       final doctors = await apiService.fetchDoctors(widget.token);
       setState(() {
         _doctors = doctors;
+        if (_doctors.isNotEmpty) {
+          _selectedDoctorId = _doctors[0]['id'];
+          _selectedDoctorName = _doctors[0]['username'];
+        }
       });
     } catch (e) {
       print(e);
@@ -65,102 +72,113 @@ class _ReserveAppointmentPageState extends State<ReserveAppointmentPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            TableCalendar(
-              firstDay: DateTime
-                  .now(), // Sets the current day as the earliest selectable date.
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: _focusedDay,
-              calendarFormat: CalendarFormat.month,
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                if (selectedDay.isBefore(DateTime.now())) {
-                  // Prevent selection of past dates
-                  return;
-                }
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay; // Update `_focusedDay` here as well
-                });
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
-            ),
-            SizedBox(height: 20),
-            DropdownButton<int>(
-              value: _selectedDoctorId,
-              hint: Text("Select Doctor"),
-              onChanged: (int? newValue) {
-                setState(() {
-                  _selectedDoctorId = newValue;
-                });
-              },
-              items: _doctors.map<DropdownMenuItem<int>>((dynamic doctor) {
-                return DropdownMenuItem<int>(
-                  value: doctor['id'],
-                  child: Text(doctor['username']),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            DropdownButton<String>(
-              value: _selectedTime,
-              hint: Text("Select Time Slot"),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedTime = newValue;
-                });
-              },
-              items: _timeSlots.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Notes",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                filled: true,
-                fillColor: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TableCalendar(
+                firstDay: DateTime
+                    .now(), // Sets the current day as the earliest selectable date.
+                lastDay: DateTime.utc(2030, 3, 14),
+                focusedDay: _focusedDay,
+                calendarFormat: CalendarFormat.month,
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (selectedDay.isBefore(DateTime.now())) {
+                    // Prevent selection of past dates
+                    return;
+                  }
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay =
+                        focusedDay; // Update `_focusedDay` here as well
+                  });
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  _notes = value;
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: (_selectedTime == null ||
-                      _selectedDay.isBefore(DateTime.now()) ||
-                      _selectedDoctorId == null)
-                  ? null
-                  : () {
-                      // Proceed with the selected date and time
-                      _proceedWithBooking();
+              SizedBox(height: 20),
+              DropdownButton<int>(
+                value: _selectedDoctorId,
+                hint: Text("Select Doctor"),
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _selectedDoctorId = newValue;
+                    _selectedDoctorName = _doctors.firstWhere(
+                        (doctor) => doctor['id'] == newValue)['username'];
+                  });
+                },
+                items: _doctors.map<DropdownMenuItem<int>>((dynamic doctor) {
+                  return DropdownMenuItem<int>(
+                    value: doctor['id'],
+                    child: Text(doctor['username']),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 20),
+              DropdownButton<String>(
+                value: _selectedTime,
+                hint: Text("Select Time Slot"),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedTime = newValue;
+                  });
+                },
+                items: _timeSlots.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Notes",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _notes = value;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: (_selectedTime == null ||
+                        _selectedDay.isBefore(DateTime.now()) ||
+                        _selectedDoctorId == null)
+                    ? null
+                    : () {
+                        // Print statements for debugging
+                        print("Selected Time: $_selectedTime");
+                        print("Selected Day: $_selectedDay");
+                        print("Selected Doctor ID: $_selectedDoctorId");
+                        print("Selected Doctor Name: $_selectedDoctorName");
+
+                        // Proceed with the selected date and time
+                        _proceedWithBooking();
+                      },
+                child: Text('Confirm Appointment'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Colors.grey; // Disabled color
+                      }
+                      return Colors.blue; // Regular color
                     },
-              child: Text('Confirm Appointment'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.disabled)) {
-                      return Colors.grey; // Disabled color
-                    }
-                    return Colors.blue; // Regular color
-                  },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -179,7 +197,9 @@ class _ReserveAppointmentPageState extends State<ReserveAppointmentPage> {
       await apiService.scheduleAppointment(
         widget.token,
         widget.patientId,
+        widget.patientName,
         _selectedDoctorId!,
+        _selectedDoctorName!,
         selectedDateTime,
         _notes,
       );
