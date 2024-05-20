@@ -9,7 +9,11 @@ import 'billing/type_of_billing.dart';
 import 'user_provider.dart';
 
 class PatientDrawer extends StatelessWidget {
-  PatientDrawer({Key? key}) : super(key: key);
+  // Declare a member variable for the optional parameter
+  final String? optionalParameter;
+
+  // Modify the constructor to accept the optional parameter
+  PatientDrawer({Key? key, this.optionalParameter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +21,14 @@ class PatientDrawer extends StatelessWidget {
     final double drawerWidth =
         screenWidth * 0.75; // Drawer covers 75% of the screen width
     final userProvider = Provider.of<UserProvider>(context);
+    String firstName;
+    if (optionalParameter != null) {
+      firstName = optionalParameter!;
+    } else {
+      firstName = userProvider.fullName.split(' ')[0];
+    }
 
-    String firstName = userProvider.fullName.split(' ')[0];
+    // String firstName = userProvider.fullName.split(' ')[0];
 
     return SizedBox(
       width: drawerWidth,

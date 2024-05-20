@@ -10,8 +10,11 @@ import 'package:cross_platform/start_page.dart';
 // Adjust the import path as necessary
 
 class DoctorDrawer extends StatelessWidget {
-  DoctorDrawer({Key? key}) : super(key: key);
+  // Declare a member variable for the optional parameter
+  final String? optionalParameter;
 
+  // Modify the constructor to accept the optional parameter
+  DoctorDrawer({Key? key, this.optionalParameter}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -20,7 +23,14 @@ class DoctorDrawer extends StatelessWidget {
 
     final userProvider = Provider.of<UserProvider>(context);
 
-    String firstName = userProvider.fullName;
+    String firstName;
+    if (optionalParameter != null) {
+      firstName = optionalParameter!;
+    } else {
+      firstName = userProvider.fullName.split(' ')[0];
+    }
+
+    // String firstName = userProvider.fullName;
 
     return SizedBox(
       width: drawerWidth,
