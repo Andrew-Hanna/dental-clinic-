@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cross_platform/doctor_portal/bill.dart';
 
 class Prescription extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _PrescriptionState extends State<Prescription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Doctor Appointments'),
+        title: Text('Prescription'),
         backgroundColor: Color.fromARGB(255, 82, 191, 245),
       ),
       body: Padding(
@@ -50,6 +51,12 @@ class _PrescriptionState extends State<Prescription> {
                         MaterialStateProperty.all<Color>(Colors.black),
                   ),
                   onPressed: () {
+                    // TODO: Save prescription logic
+                    // Navigate to the bill screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Bill()),
+                    );
                     // TODO: Save prescription logic
                   },
                   child: Text(
