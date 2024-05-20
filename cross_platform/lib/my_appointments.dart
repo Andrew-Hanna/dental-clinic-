@@ -23,6 +23,11 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
       'time': '02:00 PM',
       'service': 'Root Canal Treatment',
     },
+    {
+      'date': '2024-05-26',
+      'time': '11:00 AM',
+      'service': 'Tooth Extraction',
+    }
   ];
 
   @override
