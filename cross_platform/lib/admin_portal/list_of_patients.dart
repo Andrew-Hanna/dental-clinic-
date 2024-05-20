@@ -66,10 +66,11 @@ class ListOfPatients extends StatelessWidget {
                                 onTap: () {
                                   onPatientCellPressed(patient);
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PatientDrawer()),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PatientDrawer(
+                                              optionalParameter:
+                                                  patient['name'])));
                                 },
                               ),
                               DataCell(Center(child: Text(patient['name'])),
@@ -78,7 +79,8 @@ class ListOfPatients extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PatientDrawer()),
+                                      builder: (context) => PatientDrawer(
+                                          optionalParameter: patient['name'])),
                                 );
                               }),
                             ],

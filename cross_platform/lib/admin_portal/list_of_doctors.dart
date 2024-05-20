@@ -68,7 +68,9 @@ class ListOfDoctors extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DoctorDrawer()),
+                                        builder: (context) => DoctorDrawer(
+                                              optionalParameter: doctor['name'],
+                                            )),
                                   );
                                 },
                               ),

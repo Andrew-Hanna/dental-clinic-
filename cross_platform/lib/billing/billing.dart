@@ -1,3 +1,4 @@
+import 'package:cross_platform/home_page/my_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
@@ -54,6 +55,28 @@ class _BillingState extends State<Billing> {
       print('Expiry Date: ${expiryDateController.text}');
       print('Card Holder Name: ${cardHolderNameController.text}');
       print('CVV Code: ${cvvCodeController.text}');
+      // You can add further processing logic here, such as making a network request to process the payment
+      // Show a snack bar indicating successful payment
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Payment Successful'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => (MyHomePage())),
+                  );
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
       // You can add further processing logic here, such as making a network request to process the payment
     } else {
       print('Invalid form');

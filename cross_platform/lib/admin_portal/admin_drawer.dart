@@ -3,7 +3,7 @@ import 'package:cross_platform/admin_portal/list_of_patients.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cross_platform/admin_portal/list_of_doctors.dart';
-
+import 'package:cross_platform/start_page.dart';
 import 'package:cross_platform/doctor_portal/doctor_appointments.dart';
 // Adjust the import path as necessary
 
@@ -103,6 +103,26 @@ class AdminDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ChartWidget()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+              ),
+              tileColor: Color.fromARGB(255, 233, 228, 228),
+              title: const Text(
+                'LOGOUT',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 161, 12, 12),
+                  fontSize: 15,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StartPage()),
                 );
               },
             ),
