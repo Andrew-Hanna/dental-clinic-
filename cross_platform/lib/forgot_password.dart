@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'api_service.dart';
+import 'reset_password.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends StatefulWidget {
+  @override
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final Color themeColor = Color.fromARGB(255, 82, 191, 245);
+  final TextEditingController emailController = TextEditingController();
+  final ApiService apiService = ApiService();
+
   @override
   Widget build(BuildContext context) {
-    final Color themeColor = Color.fromARGB(255, 82, 191, 245);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Forgot Password"),
@@ -35,6 +44,7 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: "Email",
@@ -58,24 +68,31 @@ class ForgotPasswordPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              onPressed: () {
-                // Implement password reset logic
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("Password Reset"),
-                    content: Text(
-                        "Link to reset password has been sent to your email."),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  ),
-                );
+              onPressed: () async {
+                try {
+                  final response =
+                      await apiService.forgotPassword(emailController.text);
+                  final token = response['reset_token'];
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ResetPasswordPage(token: token),
+                  ));
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("Error"),
+                      content: Text(e.toString()),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
               child: Text("Send Instructions"),
             ),

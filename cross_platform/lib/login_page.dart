@@ -125,15 +125,10 @@ class _LoginPageState extends State<LoginPage> {
                               await ApiService().loginUser(username, password);
                           String userRole = loginResponse['role'];
                           String accessToken = loginResponse['access_token'];
+                          int userId = loginResponse['user_id'];
+
                           Provider.of<UserProvider>(context, listen: false)
                               .setUserRole(userRole);
-
-                          var userInfo =
-                              await ApiService().getUserInfo(accessToken);
-                          String fullName = userInfo['full_name'];
-                          String email = userInfo['email'];
-                          Provider.of<UserProvider>(context, listen: false)
-                              .setUserInfo(fullName, email);
 
                           Navigator.push(
                             context,

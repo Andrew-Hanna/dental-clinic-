@@ -149,25 +149,34 @@ class PatientDrawer extends StatelessWidget {
               ),
               tileColor: Color.fromARGB(255, 236, 233, 233),
             ),
+            _createServiceListTile(context, 'Dental checkup',
+                Icons.check_circle, userProvider.token, userProvider.userId),
+            _createServiceListTile(context, 'Teeth cleaning', Icons.brush,
+                userProvider.token, userProvider.userId),
+            _createServiceListTile(context, 'Tooth extraction',
+                Icons.remove_circle, userProvider.token, userProvider.userId),
+            _createServiceListTile(context, 'Root canal treatment',
+                Icons.healing, userProvider.token, userProvider.userId),
             _createServiceListTile(
-                context, 'Dental checkup', Icons.check_circle),
-            _createServiceListTile(context, 'Teeth cleaning', Icons.brush),
+                context,
+                'Orthodontics',
+                FontAwesomeIcons.faceSmile,
+                userProvider.token,
+                userProvider.userId),
             _createServiceListTile(
-                context, 'Tooth extraction', Icons.remove_circle),
-            _createServiceListTile(
-                context, 'Root canal treatment', Icons.healing),
-            _createServiceListTile(
-                context, 'Orthodontics', FontAwesomeIcons.faceSmile),
-            _createServiceListTile(
-                context, 'Teeth braces', FontAwesomeIcons.teeth),
+                context,
+                'Teeth braces',
+                FontAwesomeIcons.teeth,
+                userProvider.token,
+                userProvider.userId),
           ],
         ),
       ),
     );
   }
 
-  ListTile _createServiceListTile(
-      BuildContext context, String serviceName, IconData icon) {
+  ListTile _createServiceListTile(BuildContext context, String serviceName,
+      IconData icon, String token, int patientId) {
     return ListTile(
       leading: Icon(icon),
       title: Text(
@@ -182,8 +191,12 @@ class PatientDrawer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  ReserveAppointmentPage(serviceName: serviceName)),
+              builder: (context) => ReserveAppointmentPage(
+                    serviceName: serviceName,
+                    token: token,
+                    patientId: patientId,
+                    // This will be selected in the appointment page
+                  )),
         );
       },
     );

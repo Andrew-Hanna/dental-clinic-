@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   static const String baseUrl =
-      'http://10.0.2.2:8000'; // Replace with your machine's IP address
+      'http://localhost:8000'; // Replace with your machine's IP address
 
   Future<Map<String, dynamic>> registerUser(
       String username,
@@ -70,6 +70,95 @@ class ApiService {
       return jsonDecode(response.body);
     } else {
       throw Exception('Failed to fetch user info');
+    }
+  }
+
+  Future<Map<String, dynamic>> forgotPassword(String email) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/forgot-password/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to send password reset email');
+    }
+  }
+
+  Future<Map<String, dynamic>> resetPassword(
+      String token, String newPassword) async {
+    final response = await http.post(
+      Uri.parse(
+          '$baseUrl/reset-password/?token=$token&new_password=$newPassword'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+
+    print(
+        "Request URL: ${Uri.parse('$baseUrl/reset-password/?token=$token&new_password=$newPassword')}"); // Debug print statement
+
+    if (response.statusCode == 200) {
+      print("Response Body: ${response.body}"); // Debug print statement
+      return jsonDecode(response.body);
+    } else {
+      print("Response Body: ${response.body}"); // Debug print statement
+      throw Exception('Failed to reset password');
+    }
+  }
+
+  Future<List<dynamic>> fetchDoctors(String token) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/doctors/'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    print("Response Body: ${response.body}"); // Debug print statement
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load doctors');
+    }
+  }
+
+  Future<Map<String, dynamic>> scheduleAppointment(String token, int patientId,
+      int doctorId, DateTime scheduledTime, String? notes) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/appointments/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'patient_id': patientId,
+        'doctor_id': doctorId,
+        'scheduled_time': scheduledTime.toIso8601String(),
+        'notes': notes,
+      }),
+    );
+
+    print("Request Payload: ${jsonEncode(<String, dynamic>{
+          'patient_id': patientId,
+          'doctor_id': doctorId,
+          'scheduled_time': scheduledTime.toIso8601String(),
+          'notes': notes,
+        })}"); // Debug print statement
+
+    if (response.statusCode == 200) {
+      print("Response Body: ${response.body}"); // Debug print statement
+      return jsonDecode(response.body);
+    } else {
+      print("Response Body: ${response.body}"); // Debug print statement
+      throw Exception('Failed to schedule appointment');
     }
   }
 }

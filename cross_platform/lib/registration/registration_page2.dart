@@ -183,16 +183,15 @@ class _RegistrationPage2State extends State<RegistrationPage2> {
 
                       var loginResponse = await ApiService()
                           .loginUser(widget.username, widget.password);
-                      String userRole = loginResponse[
-                          'role']; // Get the role from the login response
+                      String userRole = loginResponse['role'];
+                      String accessToken = loginResponse['access_token'];
+                      int userId = loginResponse['user_id'];
+
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUserRole(
-                              userRole); // Set the user role in the provider
+                          .setUserRole(userRole);
                       Provider.of<UserProvider>(context, listen: false)
-                          .setUserInfo(
-                              widget.username,
-                              widget
-                                  .email); // Set the user info in the provider
+                          .setUserInfo(widget.username, widget.email,
+                              accessToken, userId);
 
                       Navigator.push(
                         context,
